@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechRent - Premium Computer Rentals</title>
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* CSS Reset & Variables */
+    :root {
+      --primary-color: #2563eb;
+      --secondary-color: #1e293b;
+      --accent-color: #f59e0b;
+      --background-color: #f8fafc;
+      --text-color: #334155;
+      --white: #ffffff;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+      --radius: 0.5rem;
+      --font-main: 'Inter', system-ui, sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.5;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+    }
+
+    .btn-outline {
+      border: 1px solid var(--gray-300);
+      background-color: white;
+      color: var(--text-color);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .page-view {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .page-view.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: var(--white);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 1rem 0;
+    }
+
+    .navbar-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+    }
+
+    .navbar-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+
+    .menu-icon {
+      display: none;
+      cursor: pointer;
+      color: var(--secondary-color);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links {
+      font-weight: 500;
+      color: var(--text-color);
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    .nav-links:hover,
+    .nav-links.active-link {
+      color: var(--primary-color);
+    }
+
+    /* Computer Card */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--gray-100);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .image-container {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .card:hover .card-img {
+      transform: scale(1.05);
+    }
+
+    .status-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status-badge.available {
+      background-color: #10b981;
+      color: white;
+    }
+
+    .status-badge.rented {
+      background-color: #ef4444;
+      color: white;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .category-tag {
+      font-size: 0.8rem;
+      color: var(--primary-color);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--secondary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .card-specs {
+      font-size: 0.9rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+      opacity: 0.8;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      border-top: 1px solid var(--gray-100);
+      padding-top: 1rem;
+    }
+
+    .price {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+
+    .period {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--text-color);
+    }
+
+    .btn-detail {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: var(--primary-color);
+      font-weight: 600;
+      transition: gap 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-detail:hover {
+      gap: 0.5rem;
+    }
+
+    /* Home Page Styles */
+    .hero {
+      background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      padding: 8rem 0;
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      font-weight: 800;
+    }
+
+    .hero-content p {
+      font-size: 1.25rem;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      color: var(--gray-200);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      color: var(--secondary-color);
+      margin-bottom: 3rem;
+    }
+
+    .features-section {
+      padding: 4rem 0;
+      background-color: var(--white);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .feature-icon {
+      background-color: #eff6ff;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: var(--primary-color);
+    }
+
+    /* Rentals Styles */
+    .rentals-header {
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+    }
+
+    .rentals-content {
+      padding: 4rem 0;
+    }
+
+    .filters-section {
+      background-color: var(--white);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border: 1px solid var(--gray-200);
+    }
+
+    .rentals-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    /* Details Styles */
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+      padding: 4rem 0;
+    }
+
+    .details-img {
+      width: 100%;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+    }
+
+    .rental-options {
+      background-color: var(--gray-50);
+      padding: 2rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      margin-top: 2rem;
+    }
+
+    .duration-selector {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .duration-btn {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1px solid var(--gray-300);
+      background: white;
+      border-radius: var(--radius);
+    }
+
+    .duration-btn.active {
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+
+    /* Cart Styles */
+    .cart-page {
+      padding: 3rem 0;
+    }
+
+    .cart-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .cart-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: var(--radius);
+    }
+
+    /* Footer */
+    .footer-section {
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 4rem 0 2rem;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 1.5rem;
+      text-align: center;
+      color: var(--gray-300);
+      font-size: 0.9rem;
+    }
+
+    /* Admin Styles - Simplified */
+    .admin-page {
+      display: flex;
+      min-height: 100vh;
+      background-color: var(--gray-100);
+    }
+
+    .admin-sidebar {
+      width: 250px;
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 2rem 1rem;
+    }
+
+    .admin-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .admin-table th,
+    .admin-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .menu-icon {
+        display: block;
+      }
+
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: var(--shadow-md);
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-page {
+        flex-direction: column;
+      }
+
+      .admin-sidebar {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .contact-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="#" class="navbar-logo" onclick="app.navigate('/')">TechRent</a>
+        <div class="menu-icon" onclick="app.toggleMenu()">
+          <i data-lucide="menu"></i>
+        </div>
+        <div class="nav-menu" id="nav-menu">
+          <a href="#" class="nav-links" onclick="app.navigate('/')">Home</a>
+          <a href="#" class="nav-links" onclick="app.navigate('/rentals')">Rentals</a>
+          <a href="#" class="nav-links" onclick="app.navigate('/cart')">
+            <span style="display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="shopping-cart" size="18"></i> Cart
+              <span id="cart-badge"
+                style="background: var(--primary-color); color: white; border-radius: 50%; padding: 0.1rem 0.4rem; font-size: 0.7rem;">0</span>
+            </span>
+          </a>
+          <a href="#" class="nav-links" onclick="app.navigate('/contact')">Contact</a>
+          <a href="#" class="nav-links" id="auth-link" onclick="app.handleAuth()">Login</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div id="main-content">
+      <!-- Home Page -->
+      <div id="home-view" class="page-view">
+        <section class="hero">
+          <div class="container hero-content">
+            <h1>Power Your Potential with Premium Tech Rentals</h1>
+            <p>Access high-end computers, laptops, and workstations for a fraction of the cost. Flexible plans for
+              freelancers, students, and businesses.</p>
+            <button class="btn btn-primary" onclick="app.navigate('/rentals')">Browse Computers</button>
+          </div>
+        </section>
+        <section class="features-section container">
+          <h2 class="section-title">Why Rent With Us?</h2>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon"><i data-lucide="cpu"></i></div>
+              <h3>Premium Performance</h3>
+              <p>Latest processors and high-end specs ensured.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon"><i data-lucide="clock"></i></div>
+              <h3>Flexible Terms</h3>
+              <p>Rent by the day, week, or month.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon"><i data-lucide="shield"></i></div>
+              <h3>Full Protection</h3>
+              <p>Insurance and support included.</p>
+            </div>
+          </div>
+        </section>
+        <section class="container" style="padding: 4rem 0;">
+          <h2 class="section-title">Featured Rentals</h2>
+          <div class="grid rentals-grid" id="featured-grid">
+            <!-- Populated by JS -->
+          </div>
+        </section>
+      </div>
+
+      <!-- Rentals Page -->
+      <div id="rentals-view" class="page-view">
+        <div class="rentals-header">
+          <div class="container">
+            <h1>Find Your Perfect Rental</h1>
+          </div>
+        </div>
+        <div class="container rentals-content">
+          <div class="filters-section">
+            <input type="text" id="search-input" placeholder="Search..."
+              style="padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: var(--radius);">
+            <select id="category-filter"
+              style="padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: var(--radius);">
+              <option value="All">All Categories</option>
+            </select>
+            <select id="brand-filter"
+              style="padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: var(--radius);">
+              <option value="All">All Brands</option>
+            </select>
+            <button class="btn btn-primary" onclick="app.applyFilters()">Filter</button>
+          </div>
+          <div class="grid rentals-grid" id="rentals-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Rental Details Page -->
+      <div id="details-view" class="page-view">
+        <div class="container details-grid" id="details-content">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Cart Page -->
+      <div id="cart-view" class="page-view">
+        <div class="container cart-page">
+          <h1 class="page-title">Your Cart</h1>
+          <div id="cart-content" class="cart-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Login Page -->
+      <div id="login-view" class="page-view">
+        <div class="container"
+          style="max-width: 400px; margin-top: 4rem; padding: 2rem; background: white; border-radius: var(--radius); box-shadow: var(--shadow-md);">
+          <h2 style="text-align: center; margin-bottom: 2rem;">Login</h2>
+          <div style="margin-bottom: 1rem;">
+            <label>Email</label>
+            <input type="email" id="login-email"
+              style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-300); margin-top: 0.5rem;">
+          </div>
+          <div style="margin-bottom: 2rem;">
+            <label>Password</label>
+            <input type="password" id="login-password"
+              style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-300); margin-top: 0.5rem;">
+          </div>
+          <button class="btn btn-primary" style="width: 100%;" onclick="app.login()">Sign In</button>
+          <p style="margin-top: 1rem; font-size: 0.8rem; text-align: center;">Use 'admin' in email for Admin access.</p>
+        </div>
+      </div>
+
+      <!-- Contact Page -->
+      <div id="contact-view" class="page-view">
+        <div class="rentals-header">
+          <div class="container">
+            <h1>Contact Us</h1>
+            <p>Get in touch for custom quotes or support</p>
+          </div>
+        </div>
+        <div class="container" style="padding: 4rem 0;">
+          <div class="contact-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+            <div class="contact-info">
+              <h2 style="margin-bottom: 1.5rem;">Get in Touch</h2>
+              <p style="margin-bottom: 2rem; color: var(--text-color); opacity: 0.8;">Have a question about our rentals?
+                Need a custom quote for your business? Fill out the form and we'll get back to you within 24 hours.</p>
+
+              <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+                <div style="color: var(--primary-color);"><i data-lucide="map-pin"></i></div>
+                <span>123 Tech Street, Silicon Valley, CA 94025</span>
+              </div>
+              <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+                <div style="color: var(--primary-color);"><i data-lucide="phone"></i></div>
+                <span>+1 (555) 123-4567</span>
+              </div>
+              <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+                <div style="color: var(--primary-color);"><i data-lucide="mail"></i></div>
+                <span>support@techrent.com</span>
+              </div>
+
+              <div style="margin-top: 3rem; background: var(--gray-100); padding: 2rem; border-radius: var(--radius);">
+                <h3 style="margin-bottom: 1rem;">Operating Hours</h3>
+                <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
+                <p>Saturday: 10:00 AM - 4:00 PM</p>
+                <p>Sunday: Closed</p>
+              </div>
+            </div>
+
+            <div class="contact-form-container"
+              style="background: white; padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200);">
+              <h2 style="margin-bottom: 1.5rem;">Send a Message & Request Rental</h2>
+              <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Name</label>
+                <input type="text" id="contact-name"
+                  style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: var(--radius);">
+              </div>
+              <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email</label>
+                <input type="email" id="contact-email"
+                  style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: var(--radius);">
+              </div>
+              <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Subject / Rental Request</label>
+                <select id="contact-subject"
+                  style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: var(--radius);">
+                  <option>Rental Inquiry (Specific PC)</option>
+                  <option>Bulk Order Quote</option>
+                  <option>General Inquiry</option>
+                  <option>Technical Support</option>
+                </select>
+              </div>
+              <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message</label>
+                <textarea id="contact-message" rows="4"
+                  placeholder="Tell us which PC you are interested in or ask any questions..."
+                  style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: var(--radius); resize: vertical;"></textarea>
+              </div>
+              <button class="btn btn-primary" style="width: 100%;" onclick="app.submitContact()">Submit Request</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Page -->
+      <div id="admin-view" class="page-view">
+        <div class="admin-page">
+          <div class="admin-sidebar">
+            <h2>Admin Panel</h2>
+            <ul style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
+              <li onclick="app.switchAdminTab('dashboard')" style="cursor: pointer;">Dashboard</li>
+              <li onclick="app.switchAdminTab('computers')" style="cursor: pointer;">Computers</li>
+              <li onclick="app.switchAdminTab('orders')" style="cursor: pointer;">Orders</li>
+              <li onclick="app.logout()" style="cursor: pointer; margin-top: auto; color: #ef4444;">Logout</li>
+            </ul>
+          </div>
+          <div class="admin-content">
+            <div id="admin-dashboard-tab">
+              <h1>Dashboard</h1>
+              <div class="dashboard-stats">
+                <div class="stat-card">
+                  <h3>Total Revenue</h3>
+                  <p class="stat-value" id="total-revenue">$0</p>
+                </div>
+                <div class="stat-card">
+                  <h3>Active Rentals</h3>
+                  <p class="stat-value" id="active-rentals">0</p>
+                </div>
+                <div class="stat-card">
+                  <h3>Total Computers</h3>
+                  <p class="stat-value" id="total-computers">0</p>
+                </div>
+              </div>
+            </div>
+
+            <div id="admin-computers-tab" style="display: none;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2>Inventory</h2>
+                <button class="btn btn-primary" onclick="app.toggleAddModal(true)">+ Add New</button>
+              </div>
+              <div class="table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Price/Day</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-table-body">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="admin-orders-tab" style="display: none;">
+              <h2>Recent Orders</h2>
+              <div class="table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Date</th>
+                      <th>Customer</th>
+                      <th>Video Items</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-orders-body">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Computer Modal -->
+          <div id="add-modal"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 2000;">
+            <div style="background: white; padding: 2rem; border-radius: var(--radius); width: 90%; max-width: 500px;">
+              <h2 style="margin-bottom: 1.5rem;">Add New Computer</h2>
+              <input type="text" id="new-name" placeholder="Computer Name"
+                style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid var(--gray-300);">
+              <select id="new-category"
+                style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid var(--gray-300);">
+                <option value="Laptops">Laptops</option>
+                <option value="Desktops">Desktops</option>
+                <option value="Gaming PCs">Gaming PCs</option>
+                <option value="Workstations">Workstations</option>
+              </select>
+              <input type="text" id="new-brand" placeholder="Brand"
+                style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid var(--gray-300);">
+              <input type="number" id="new-price" placeholder="Price per Day ($)"
+                style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid var(--gray-300);">
+              <input type="text" id="new-image" placeholder="Image URL"
+                value="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+                style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid var(--gray-300);">
+              <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button class="btn btn-outline" onclick="app.toggleAddModal(false)">Cancel</button>
+                <button class="btn btn-primary" onclick="app.addComputer()">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+      <div class="container">
+        <div class="footer-content">
+          <div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">TechRent</h3>
+            <p style="color: var(--gray-300);">Premium computer rentals for professionals.</p>
+          </div>
+          <div>
+            <h4>Quick Links</h4>
+            <ul style="margin-top: 1rem; color: var(--gray-300); display: flex; flex-direction: column; gap: 0.5rem;">
+              <li><a href="#" onclick="app.navigate('/')">Home</a></li>
+              <li><a href="#" onclick="app.navigate('/rentals')">Rentals</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Contact</h4>
+            <p style="margin-top: 1rem; color: var(--gray-300);">support@techrent.com</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 TechRent. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Application Script -->
+  <script>
+    // Dummy Data
+    const computersData = [
+      {
+        id: 1,
+        name: "MacBook Pro 16",
+        category: "Laptops",
+        brand: "Apple",
+        image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+        specs: { processor: "M2 Pro", ram: "16GB", storage: "512GB SSD", display: "16.2-inch Liquid Retina XDR" },
+        price: { day: 45, week: 250, month: 800 },
+        status: "Available"
+      },
+      {
+        id: 2,
+        name: "Dell XPS 15",
+        category: "Laptops",
+        brand: "Dell",
+        image: "https://images.unsplash.com/photo-1593642632823-8f78536788c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+        specs: { processor: "Intel Core i9", ram: "32GB", storage: "1TB SSD", display: "15.6-inch 4K UHD+" },
+        price: { day: 40, week: 220, month: 700 },
+        status: "Available"
+      },
+      {
+        id: 3,
+        name: "Gaming Beast PC",
+        category: "Gaming PCs",
+        brand: "Custom",
+        image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+        specs: { processor: "AMD Ryzen 9", ram: "32GB", storage: "2TB NVMe", gpu: "RTX 4080" },
+        price: { day: 60, week: 350, month: 1100 },
+        status: "Rented"
+      },
+      {
+        id: 4,
+        name: "Lenovo ThinkPad X1",
+        category: "Laptops",
+        brand: "Lenovo",
+        image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+        specs: { processor: "Intel Core i7", ram: "16GB", storage: "512GB SSD", display: "14-inch OLED" },
+        price: { day: 35, week: 190, month: 600 },
+        status: "Available"
+      }
+    ];
+
+    // Application Logic
+    const app = {
+      state: {
+        cart: JSON.parse(localStorage.getItem('cart')) || [],
+        user: JSON.parse(localStorage.getItem('user')) || null,
+        computers: JSON.parse(localStorage.getItem('computers')) || computersData,
+        orders: JSON.parse(localStorage.getItem('orders')) || [],
+        currentRoute: '/',
+        filters: { search: '', category: 'All', brand: 'All' },
+        adminTab: 'dashboard'
+      },
+
+      init: () => {
+        app.updateCartBadge();
+        app.updateAuthLink();
+        app.populateFilters();
+        app.navigate(location.hash.slice(1) || '/');
+        lucide.createIcons();
+
+        // Route Listener
+        window.addEventListener('hashchange', () => {
+          app.navigate(location.hash.slice(1) || '/');
+        });
+      },
+
+      navigate: (path) => {
+        window.location.hash = path;
+        app.state.currentRoute = path;
+
+        // Hide all views
+        document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
+
+        // Show requested view
+        if (path === '/' || path === '') {
+          app.renderHome();
+          document.getElementById('home-view').classList.add('active');
+        } else if (path === '/rentals') {
+          app.renderRentals();
+          document.getElementById('rentals-view').classList.add('active');
+        } else if (path === '/cart') {
+          app.renderCart();
+          document.getElementById('cart-view').classList.add('active');
+        } else if (path.startsWith('/rentals/')) {
+          const id = parseInt(path.split('/')[2]);
+          app.renderDetails(id);
+          document.getElementById('details-view').classList.add('active');
+        } else if (path === '/admin') {
+          if (app.state.user?.isAdmin) {
+            app.renderAdmin();
+            document.getElementById('admin-view').classList.add('active');
+          } else {
+            app.navigate('/login');
+          }
+        } else if (path === '/login') {
+          document.getElementById('login-view').classList.add('active');
+        } else if (path === '/contact') {
+          document.getElementById('contact-view').classList.add('active');
+        }
+
+        document.getElementById('nav-menu').classList.remove('active');
+        window.scrollTo(0, 0);
+        setTimeout(() => lucide.createIcons(), 100);
+      },
+
+      toggleMenu: () => {
+        document.getElementById('nav-menu').classList.toggle('active');
+      },
+
+      updateCartBadge: () => {
+        document.getElementById('cart-badge').innerText = app.state.cart.length;
+      },
+
+      updateAuthLink: () => {
+        const link = document.getElementById('auth-link');
+        if (app.state.user) {
+          link.innerText = app.state.user.isAdmin ? 'Admin' : 'Logout';
+          link.onclick = (e) => { e.preventDefault(); app.state.user.isAdmin ? app.navigate('/admin') : app.logout(); };
+        } else {
+          link.innerText = 'Login';
+          link.onclick = (e) => { e.preventDefault(); app.navigate('/login'); };
+        }
+      },
+
+      populateFilters: () => {
+        const categories = ['All', ...new Set(app.state.computers.map(c => c.category))];
+        const brands = ['All', ...new Set(app.state.computers.map(c => c.brand))];
+
+        const catSelect = document.getElementById('category-filter');
+        const brandSelect = document.getElementById('brand-filter');
+
+        catSelect.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
+        brandSelect.innerHTML = brands.map(b => `<option value="${b}">${b}</option>`).join('');
+      },
+
+      applyFilters: () => {
+        app.state.filters.search = document.getElementById('search-input').value.toLowerCase();
+        app.state.filters.category = document.getElementById('category-filter').value;
+        app.state.filters.brand = document.getElementById('brand-filter').value;
+        app.renderRentals();
+      },
+
+      // Render Methods
+      renderHome: () => {
+        const featured = app.state.computers.slice(0, 3);
+        document.getElementById('featured-grid').innerHTML = featured.map(app.createCardHTML).join('');
+      },
+
+      renderRentals: () => {
+        let result = app.state.computers.filter(c => {
+          const matchesSearch = c.name.toLowerCase().includes(app.state.filters.search);
+          const matchesCat = app.state.filters.category === 'All' || c.category === app.state.filters.category;
+          const matchesBrand = app.state.filters.brand === 'All' || c.brand === app.state.filters.brand;
+          return matchesSearch && matchesCat && matchesBrand;
+        });
+
+        document.getElementById('rentals-grid').innerHTML = result.length ?
+          result.map(app.createCardHTML).join('') : '<p style="grid-column: 1/-1; text-align: center;">No results found.</p>';
+        setTimeout(() => lucide.createIcons(), 100);
+      },
+
+      createCardHTML: (c) => `
+                <div class="card">
+                    <div class="image-container">
+                        <img src="${c.image}" alt="${c.name}" class="card-img" />
+                        <span class="status-badge ${c.status.toLowerCase()}">${c.status}</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="category-tag">${c.category}</div>
+                        <h3 class="card-title">${c.name}</h3>
+                        <div class="card-specs">
+                            <span><i data-lucide="cpu" style="display:inline; width:14px"></i> ${c.specs.processor}</span> • <span>${c.specs.ram}</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price">$${c.price.day} <span class="period">/ day</span></div>
+                            <button class="btn-detail" onclick="app.navigate('/rentals/${c.id}')">
+                                Details <i data-lucide="arrow-right" size="16"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `,
+
+      renderDetails: (id) => {
+        const c = app.state.computers.find(x => x.id === id);
+        if (!c) return app.navigate('/rentals');
+
+        const html = `
+                    <div class="details-image-section">
+                        <img src="${c.image}" class="details-img" />
+                        <span class="status-badge-large ${c.status.toLowerCase()}">${c.status}</span>
+                    </div>
+                    <div class="details-info-section">
+                        <span class="category-label" style="background:var(--gray-200); padding:0.2rem 0.5rem; border-radius:4px;">${c.category}</span>
+                        <h1 class="product-title" style="font-size:2.5rem; color: var(--secondary-color);">${c.name}</h1>
+                        <p style="margin-bottom:1rem; opacity:0.7;">Brand: ${c.brand}</p>
+                        <h3>Specs</h3>
+                        <ul style="margin-bottom:2rem; list-style:disc; padding-left:1.5rem;">
+                            <li>Processor: ${c.specs.processor}</li>
+                            <li>RAM: ${c.specs.ram}</li>
+                            <li>Storage: ${c.specs.storage}</li>
+                        </ul>
+                        <div class="rental-options">
+                             <div style="font-size:1.5rem; color:var(--primary-color); font-weight:bold; margin-bottom:1rem;">$${c.price.day} / day</div>
+                             <button class="btn btn-primary btn-block" onclick="app.addToCart(${c.id})" ${c.status !== 'Available' ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>${c.status === 'Available' ? 'Add to Cart' : 'Currently Unavailable'}</button>
+                        </div>
+                    </div>
+                `;
+        document.getElementById('details-content').innerHTML = html;
+      },
+
+      renderCart: () => {
+        const container = document.getElementById('cart-content');
+        if (app.state.cart.length === 0) {
+          container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:4rem;"><p>Cart is empty</p><button class="btn btn-primary" onclick="app.navigate(\'/rentals\')">Browse</button></div>';
+          return;
+        }
+
+        const total = app.state.cart.reduce((sum, item) => sum + item.itemPrice, 0);
+
+        const itemsHtml = app.state.cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.image}" />
+                        <div style="flex:1;">
+                            <h3>${item.name}</h3>
+                            <p>${item.specs.processor}</p>
+                        </div>
+                        <div style="font-weight:bold;">$${item.itemPrice}</div>
+                        <button onclick="app.removeFromCart(${item.uniqueId})" style="color:red; margin-left:1rem;"><i data-lucide="trash-2"></i></button>
+                    </div>
+                `).join('');
+
+        const summaryHtml = `
+                    <div class="cart-summary-section">
+                         <h2>Summary</h2>
+                         <div class="summary-row" style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                            <span>Total</span>
+                            <span style="font-weight:700;">$${total}</span>
+                         </div>
+                         <button class="btn btn-primary btn-block" onclick="app.checkout(${total})">Checkout</button>
+                    </div>
+                `;
+
+        container.innerHTML = `<div class="cart-items-section">${itemsHtml}</div>${summaryHtml}`;
+        setTimeout(() => lucide.createIcons(), 100);
+      },
+
+      renderAdmin: () => {
+        // Dashboard Stats
+        const totalRevenue = app.state.orders.reduce((sum, order) => sum + order.total, 0);
+        const activeRentals = app.state.computers.filter(c => c.status === 'Rented').length;
+
+        document.getElementById('total-revenue').innerText = '$' + totalRevenue;
+        document.getElementById('active-rentals').innerText = activeRentals;
+        document.getElementById('total-computers').innerText = app.state.computers.length;
+
+        // Computers Table
+        const rows = app.state.computers.map(c => `
+                    <tr>
+                        <td>#${c.id}</td>
+                        <td>${c.name}</td>
+                        <td>$${c.price.day}</td>
+                        <td><span class="status-badge-sm ${c.status.toLowerCase()}" style="padding:0.2rem 0.5rem; background:${c.status === 'Available' ? '#d1fae5' : '#fee2e2'}; color:${c.status === 'Available' ? '#065f46' : '#991b1b'}; border-radius:1rem;">${c.status}</span></td>
+                        <td><button style="color:red;" onclick="app.deleteComputer(${c.id})"><i data-lucide="trash"></i></button></td>
+                    </tr>
+                `).join('');
+        document.getElementById('admin-table-body').innerHTML = rows;
+
+        // Orders Table
+        const orderRows = app.state.orders.map(o => `
+            <tr>
+                <td>#${o.id}</td>
+                <td>${new Date(o.date).toLocaleDateString()}</td>
+                <td>${o.customer}</td>
+                <td>${o.items.length}</td>
+                <td>$${o.total}</td>
+            </tr>
+          `).join('');
+        document.getElementById('admin-orders-body').innerHTML = orderRows || '<tr><td colspan="5">No orders yet</td></tr>';
+
+        setTimeout(() => lucide.createIcons(), 100);
+
+        // Show correct tab logic handled by switchAdminTab styling or simple display toggles
+        app.switchAdminTab(app.state.adminTab || 'dashboard');
+      },
+
+      switchAdminTab: (tab) => {
+        app.state.adminTab = tab;
+        document.getElementById('admin-dashboard-tab').style.display = tab === 'dashboard' ? 'block' : 'none';
+        document.getElementById('admin-computers-tab').style.display = tab === 'computers' ? 'block' : 'none';
+        document.getElementById('admin-orders-tab').style.display = tab === 'orders' ? 'block' : 'none';
+      },
+
+      toggleAddModal: (show) => {
+        document.getElementById('add-modal').style.display = show ? 'flex' : 'none';
+      },
+
+      addComputer: () => {
+        const name = document.getElementById('new-name').value;
+        const category = document.getElementById('new-category').value;
+        const brand = document.getElementById('new-brand').value;
+        const price = document.getElementById('new-price').value;
+        const image = document.getElementById('new-image').value;
+
+        if (!name || !brand || !price) { alert('Fill all fields'); return; }
+
+        const newId = app.state.computers.length > 0 ? Math.max(...app.state.computers.map(c => c.id)) + 1 : 1;
+        const newComputer = {
+          id: newId,
+          name, category, brand, image,
+          specs: { processor: "Standard", ram: "8GB", storage: "256GB" },
+          price: { day: parseInt(price), week: parseInt(price) * 5, month: parseInt(price) * 20 },
+          status: "Available"
+        };
+
+        app.state.computers.push(newComputer);
+        app.saveComputers();
+        app.toggleAddModal(false);
+        app.renderAdmin();
+      },
+
+      deleteComputer: (id) => {
+        if (confirm('Are you sure you want to delete this computer?')) {
+          app.state.computers = app.state.computers.filter(c => c.id !== id);
+          app.saveComputers();
+          app.renderAdmin();
+        }
+      },
+
+      saveComputers: () => {
+        localStorage.setItem('computers', JSON.stringify(app.state.computers));
+      },
+
+      checkout: (total) => {
+        const order = {
+          id: Math.floor(Math.random() * 100000),
+          date: new Date().toISOString(),
+          customer: app.state.user ? app.state.user.email : 'Guest',
+          items: [...app.state.cart],
+          total: total
+        };
+
+        app.state.orders.push(order);
+        localStorage.setItem('orders', JSON.stringify(app.state.orders));
+
+        // Update status of rented items
+        app.state.cart.forEach(item => {
+          const computer = app.state.computers.find(c => c.id === item.id);
+          if (computer) computer.status = 'Rented';
+        });
+        app.saveComputers();
+
+        app.clearCart();
+        alert('Order Placed Successfully! Order ID: #' + order.id);
+      },
+
+      // Actions
+      addToCart: (id) => {
+        const item = app.state.computers.find(c => c.id === id);
+        if (item) {
+          app.state.cart.push({ ...item, uniqueId: Date.now(), itemPrice: item.price.day, selectedDuration: 'day' });
+          localStorage.setItem('cart', JSON.stringify(app.state.cart));
+          app.updateCartBadge();
+          alert('Added to cart');
+          app.navigate('/cart');
+        }
+      },
+
+      removeFromCart: (uid) => {
+        app.state.cart = app.state.cart.filter(i => i.uniqueId !== uid);
+        localStorage.setItem('cart', JSON.stringify(app.state.cart));
+        app.updateCartBadge();
+        app.renderCart();
+      },
+
+      clearCart: () => {
+        app.state.cart = [];
+        localStorage.setItem('cart', JSON.stringify([]));
+        app.updateCartBadge();
+        app.navigate('/');
+      },
+
+      login: () => {
+        const email = document.getElementById('login-email').value;
+        const isAdmin = email.includes('admin');
+        app.state.user = { email, isAdmin, name: 'User' };
+        localStorage.setItem('user', JSON.stringify(app.state.user));
+        app.updateAuthLink();
+        app.navigate(isAdmin ? '/admin' : '/');
+      },
+
+      logout: () => {
+        app.state.user = null;
+        localStorage.removeItem('user');
+        app.updateAuthLink();
+        app.navigate('/');
+      },
+
+      handleAuth: () => {
+        if (app.state.user) app.logout();
+        else app.navigate('/login');
+      },
+
+      submitContact: () => {
+        const name = document.getElementById('contact-name').value;
+        const email = document.getElementById('contact-email').value;
+        const subject = document.getElementById('contact-subject').value;
+        const message = document.getElementById('contact-message').value;
+
+        if (!name || !email || !message) {
+          alert('Please fill in all required fields.');
+          return;
+        }
+
+        // Mock submission
+        alert(`Thank you, ${name}! We have received your request for "${subject}". We will contact you at ${email} shortly.`);
+
+        // Reset form
+        document.getElementById('contact-name').value = '';
+        document.getElementById('contact-email').value = '';
+        document.getElementById('contact-message').value = '';
+      }
+    };
+
+    // Start
+    document.addEventListener('DOMContentLoaded', app.init);
+  </script>
+</body>
+
+</html>
