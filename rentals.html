@@ -109,6 +109,13 @@
     .price { font-size: 1.25rem; font-weight: 700; color: var(--secondary-color); }
     .btn-detail { display: flex; align-items: center; gap: 0.25rem; color: var(--primary-color); font-weight: 600; transition: gap 0.2s; }
     .btn-detail:hover { gap: 0.5rem; }
+    .card-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .card-actions .btn { flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+    .btn-rent { background-color: #10b981; color: var(--white); }
+    .btn-rent:hover { background-color: #059669; }
+    .btn-unavailable { background-color: var(--gray-200); color: var(--text-color); cursor: not-allowed; opacity: 0.6; }
+    .cart-toast { position: fixed; bottom: 2rem; right: 2rem; background: #10b981; color: white; padding: 1rem 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 0.75rem; font-weight: 600; z-index: 9999; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
+    .cart-toast.show { transform: translateY(0); opacity: 1; }
     @media (max-width: 768px) { .filters-section { flex-direction: column; align-items: stretch; } .filter-row { flex-direction: column; align-items: stretch; gap: 1rem; } .search-input, .filter-select, .price-range { width: 100%; } }
   </style>
 </head>
@@ -249,6 +256,7 @@
 
       grid.innerHTML = filtered.map(function(c) {
         var statusClass = c.status === 'Available' ? 'available' : 'rented';
+        var isRented = c.status === 'Rented';
         var specText = c.specs.processor + ' | ' + c.specs.ram + ' RAM | ' + c.specs.storage;
         return '<div class="card">' +
           '<div class="image-container">' +
@@ -263,10 +271,45 @@
               '<span class="price">$' + c.price.day + '<span style="font-size:0.8rem;font-weight:400;opacity:0.7">/day</span></span>' +
               '<a href="rental-details.html#' + c.id + '" class="btn-detail">View Details <i data-lucide="arrow-right" style="width:16px;height:16px"></i></a>' +
             '</div>' +
+            '<div class="card-actions">' +
+              (isRented ?
+                '<button class="btn btn-unavailable" disabled style="flex:1">Unavailable</button>' :
+                '<button class="btn btn-primary" onclick="quickAddToCart(' + c.id + ')"><i data-lucide="shopping-cart" style="width:16px;height:16px"></i> Add to Cart</button>' +
+                '<button class="btn btn-rent" onclick="quickRentNow(' + c.id + ')"><i data-lucide="zap" style="width:16px;height:16px"></i> Rent Now</button>'
+              ) +
+            '</div>' +
           '</div>' +
         '</div>';
       }).join('');
       lucide.createIcons();
+    }
+
+    function quickAddToCart(id) {
+      var c = computers.find(function(x) { return x.id === id; });
+      if (!c || c.status === 'Rented') return;
+      Cart.add(c, 'day', c.price.day);
+      renderNavbar();
+      lucide.createIcons();
+      showToast(c.name + ' added to cart!');
+    }
+
+    function quickRentNow(id) {
+      var c = computers.find(function(x) { return x.id === id; });
+      if (!c || c.status === 'Rented') return;
+      Cart.add(c, 'day', c.price.day);
+      window.location.href = 'cart.html';
+    }
+
+    function showToast(msg) {
+      var existing = document.querySelector('.cart-toast');
+      if (existing) existing.remove();
+      var toast = document.createElement('div');
+      toast.className = 'cart-toast';
+      toast.innerHTML = '<i data-lucide="check-circle" style="width:20px;height:20px"></i> ' + msg;
+      document.body.appendChild(toast);
+      lucide.createIcons();
+      setTimeout(function() { toast.classList.add('show'); }, 10);
+      setTimeout(function() { toast.classList.remove('show'); setTimeout(function() { toast.remove(); }, 300); }, 3000);
     }
 
     initPage();

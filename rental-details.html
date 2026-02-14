@@ -99,7 +99,11 @@
     .quantity-input { width: 60px; padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: var(--radius); text-align: center; }
     .total-calculation { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 1.1rem; font-weight: 600; }
     .total-price { font-size: 1.5rem; color: var(--primary-color); }
-    .action-buttons { margin-bottom: 1.5rem; }
+    .action-buttons { margin-bottom: 1.5rem; display: flex; gap: 0.75rem; }
+    .btn-rent { background-color: #10b981; color: var(--white); }
+    .btn-rent:hover { background-color: #059669; }
+    .cart-toast { position: fixed; bottom: 2rem; right: 2rem; background: #10b981; color: white; padding: 1rem 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 0.75rem; font-weight: 600; z-index: 9999; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
+    .cart-toast.show { transform: translateY(0); opacity: 1; }
     .features-list { display: flex; gap: 1rem; flex-wrap: wrap; }
     .features-list p { display: flex; align-items: center; gap: 0.25rem; font-size: 0.8rem; color: var(--text-color); }
     @media (max-width: 768px) { .details-grid { grid-template-columns: 1fr; } }
@@ -209,7 +213,32 @@
       }
       var totalPrice = currentComputer.price[selectedDuration] * quantity;
       Cart.add(currentComputer, selectedDuration, totalPrice);
+      renderNavbar();
+      lucide.createIcons();
+      showToast(currentComputer.name + ' added to cart!');
+    }
+
+    function rentNow() {
+      if (!currentComputer) return;
+      if (currentComputer.status === 'Rented') {
+        alert('This computer is currently rented and unavailable.');
+        return;
+      }
+      var totalPrice = currentComputer.price[selectedDuration] * quantity;
+      Cart.add(currentComputer, selectedDuration, totalPrice);
       window.location.href = 'cart.html';
+    }
+
+    function showToast(msg) {
+      var existing = document.querySelector('.cart-toast');
+      if (existing) existing.remove();
+      var toast = document.createElement('div');
+      toast.className = 'cart-toast';
+      toast.innerHTML = '<i data-lucide="check-circle" style="width:20px;height:20px"></i> ' + msg;
+      document.body.appendChild(toast);
+      lucide.createIcons();
+      setTimeout(function() { toast.classList.add('show'); }, 10);
+      setTimeout(function() { toast.classList.remove('show'); setTimeout(function() { toast.remove(); }, 300); }, 3000);
     }
 
     function renderDetails() {
@@ -262,9 +291,11 @@
                 '<span class="total-price" id="total-price">$' + c.price.day + '</span>' +
               '</div>' +
               '<div class="action-buttons">' +
-                '<button class="btn btn-primary btn-block" onclick="addToCart()"' + (isRented ? ' disabled style="opacity:0.5;cursor:not-allowed;background-color:var(--primary-color);color:var(--white);display:block;width:100%;"' : '') + '>' +
-                  (isRented ? 'Currently Unavailable' : 'Add to Rental Cart') +
-                '</button>' +
+                (isRented ?
+                  '<button class="btn btn-primary" disabled style="opacity:0.5;cursor:not-allowed;flex:1">Currently Unavailable</button>' :
+                  '<button class="btn btn-primary" onclick="addToCart()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:0.5rem"><i data-lucide="shopping-cart" style="width:18px;height:18px"></i> Add to Cart</button>' +
+                  '<button class="btn btn-rent" onclick="rentNow()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:0.5rem"><i data-lucide="zap" style="width:18px;height:18px"></i> Rent Now</button>'
+                ) +
               '</div>' +
               '<div class="features-list">' +
                 '<p><i data-lucide="shield-check" style="width:14px;height:14px;color:#10b981"></i> Insurance Included</p>' +
