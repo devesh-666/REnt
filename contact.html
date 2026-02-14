@@ -314,14 +314,47 @@
 
       document.getElementById('contact-form').addEventListener('submit', function(e) {
         e.preventDefault();
-        var section = document.getElementById('contact-form-section');
-        section.innerHTML = '<div class="success-message">' +
-          '<div class="success-icon"><i data-lucide="check" style="width:36px;height:36px"></i></div>' +
-          '<h3>Message Sent!</h3>' +
-          '<p>Thank you for reaching out. We\'ll get back to you within 24 hours.</p>' +
-          '<button class="btn btn-primary" onclick="location.reload()">Send Another</button>' +
-          '</div>';
-        lucide.createIcons();
+        var btn = this.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+
+        var data = {
+          name: document.getElementById('contact-name').value,
+          email: document.getElementById('contact-email').value,
+          _subject: document.getElementById('contact-subject').value,
+          message: document.getElementById('contact-message').value
+        };
+
+        fetch('https://formsubmit.co/ajax/melwinanto77@gmail.com', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data)
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(result) {
+          var section = document.getElementById('contact-form-section');
+          if (result.success) {
+            section.innerHTML = '<div class="success-message">' +
+              '<div class="success-icon"><i data-lucide="check" style="width:36px;height:36px"></i></div>' +
+              '<h3>Message Sent!</h3>' +
+              '<p>Thank you for reaching out. We\'ll get back to you within 24 hours.</p>' +
+              '<button class="btn btn-primary" onclick="location.reload()">Send Another</button>' +
+              '</div>';
+          } else {
+            section.innerHTML = '<div class="success-message">' +
+              '<div class="success-icon" style="background:#ef4444"><i data-lucide="x" style="width:36px;height:36px"></i></div>' +
+              '<h3>Something went wrong</h3>' +
+              '<p>Please try again or email us directly at melwinanto77@gmail.com</p>' +
+              '<button class="btn btn-primary" onclick="location.reload()">Try Again</button>' +
+              '</div>';
+          }
+          lucide.createIcons();
+        })
+        .catch(function() {
+          btn.disabled = false;
+          btn.textContent = 'Send Message';
+          alert('Network error. Please try again.');
+        });
       });
     });
   </script>
