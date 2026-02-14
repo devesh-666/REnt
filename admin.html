@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechRent - Admin Dashboard</title>
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --secondary-color: #1e293b;
+      --accent-color: #f59e0b;
+      --background-color: #f8fafc;
+      --text-color: #334155;
+      --white: #ffffff;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 0.5rem;
+      --transition: all 0.3s ease;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: var(--background-color); color: var(--text-color); line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .btn { display: inline-block; padding: 0.75rem 1.5rem; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: var(--transition); border: none; font-size: 1rem; }
+    .btn-primary { background-color: var(--primary-color); color: var(--white); }
+    .btn-primary:hover { background-color: #1d4ed8; }
+    .btn-secondary { background-color: var(--secondary-color); color: var(--white); }
+    .btn-outline { border: 2px solid var(--primary-color); color: var(--primary-color); background: transparent; }
+    .btn-outline:hover { background-color: var(--primary-color); color: var(--white); }
+    .btn-block { display: block; width: 100%; }
+    .btn-outline-white { border: 2px solid white; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.3s; background: transparent; }
+    .btn-outline-white:hover { background: white; color: var(--secondary-color); }
+    .navbar { background-color: var(--white); box-shadow: var(--shadow-sm); position: sticky; top: 0; z-index: 1000; padding: 1rem 0; }
+    .navbar-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; position: relative; }
+    .navbar-logo { font-size: 1.5rem; font-weight: 800; color: var(--primary-color); text-transform: uppercase; letter-spacing: 1px; }
+    .menu-icon { display: none; cursor: pointer; color: var(--secondary-color); }
+    .nav-menu { display: flex; gap: 2rem; align-items: center; }
+    .nav-links { font-weight: 500; color: var(--text-color); transition: color 0.3s; }
+    .nav-links:hover, .nav-links.active { color: var(--primary-color); }
+    .nav-links-mobile { display: none; }
+    .cart-icon { position: relative; display: flex; align-items: center; }
+    .cart-badge { position: absolute; top: -8px; right: -8px; background-color: var(--accent-color); color: white; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 50%; }
+    .user-menu { display: flex; align-items: center; gap: 0.75rem; }
+    .user-name { font-weight: 500; color: var(--text-color); font-size: 0.9rem; }
+    .btn-logout { background: none; border: 1px solid #ef4444; color: #ef4444; padding: 0.35rem 0.75rem; border-radius: var(--radius); cursor: pointer; font-size: 0.85rem; transition: var(--transition); }
+    .btn-logout:hover { background: #ef4444; color: white; }
+    .footer-section { background-color: var(--secondary-color); color: white; padding: 4rem 0 2rem; margin-top: auto; }
+    .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+    .footer-col h3 { font-size: 1.5rem; margin-bottom: 1rem; color: white; }
+    .footer-col h4 { font-size: 1.2rem; margin-bottom: 1rem; color: var(--gray-300); }
+    .footer-col p { color: var(--gray-300); line-height: 1.6; }
+    .footer-col ul li { margin-bottom: 0.5rem; }
+    .footer-col ul li a { color: var(--gray-300); transition: color 0.3s; }
+    .footer-col ul li a:hover { color: white; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; text-align: center; color: var(--gray-300); font-size: 0.9rem; }
+    .social-icon { color: var(--gray-300); transition: color 0.3s; }
+    .social-icon:hover { color: white; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 1rem; font-family: inherit; }
+    .form-group textarea { height: 100px; resize: vertical; }
+    @media (max-width: 768px) {
+      .menu-icon { display: block; }
+      .nav-menu { display: none; position: absolute; width: 100%; background: white; top: 100%; left: 0; flex-direction: column; padding: 1rem 0; box-shadow: var(--shadow-md); }
+      .nav-menu.active { display: flex; }
+      .nav-item { width: 100%; text-align: center; padding: 1rem 0; }
+      .nav-links-mobile { display: block; width: 100%; text-align: center; padding: 1rem 0; }
+      .nav-btn .btn-outline { display: none; }
+      .navbar-container { padding: 0 1rem; }
+    }
+
+    .admin-page { display: flex; min-height: 100vh; background-color: var(--gray-100); }
+    .admin-sidebar { width: 250px; background-color: var(--secondary-color); color: white; padding: 2rem 1rem; display: flex; flex-direction: column; }
+    .sidebar-header { margin-bottom: 2rem; text-align: center; }
+    .sidebar-menu { list-style: none; padding: 0; }
+    .sidebar-menu li { padding: 1rem; margin-bottom: 0.5rem; cursor: pointer; border-radius: var(--radius); transition: background 0.3s; display: flex; align-items: center; gap: 0.75rem; font-weight: 500; }
+    .sidebar-menu li:hover, .sidebar-menu li.active { background-color: var(--primary-color); }
+    .admin-content { flex: 1; padding: 2rem; overflow-y: auto; }
+    .dashboard-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+    .stat-card { background: white; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-sm); text-align: center; }
+    .stat-card h3 { font-size: 1rem; color: var(--text-color); opacity: 0.7; margin-bottom: 0.5rem; }
+    .stat-value { font-size: 2rem; font-weight: 700; color: var(--secondary-color); }
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .table-container { background: white; border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow-x: auto; }
+    .admin-table { width: 100%; border-collapse: collapse; }
+    .admin-table th, .admin-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--gray-200); }
+    .admin-table th { background-color: var(--gray-50); font-weight: 600; color: var(--secondary-color); }
+    .status-badge-sm { padding: 0.25rem 0.5rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+    .status-badge-sm.available { background-color: #d1fae5; color: #065f46; }
+    .status-badge-sm.rented { background-color: #fee2e2; color: #991b1b; }
+    .status-pill { padding: 0.25rem 0.5rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 600; }
+    .status-pill.active { background-color: #dbeafe; color: #1e40af; }
+    .icon-btn.delete { background: none; border: none; color: #ef4444; cursor: pointer; transition: color 0.2s; }
+    .icon-btn.delete:hover { color: #b91c1c; }
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+    .modal { background: white; padding: 2rem; border-radius: var(--radius); width: 90%; max-width: 500px; box-shadow: var(--shadow-lg); }
+    .modal h2 { margin-bottom: 1.5rem; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; }
+    @media (max-width: 768px) { .admin-page { flex-direction: column; } .admin-sidebar { width: 100%; flex-direction: row; overflow-x: auto; align-items: center; padding: 1rem; } .sidebar-menu { display: flex; gap: 1rem; margin-left: 2rem; margin-bottom: 0; } .sidebar-menu li { padding: 0.5rem; margin-bottom: 0; } }
+  </style>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="admin-page">
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <h2 style="font-size:1.25rem;">Admin Panel</h2>
+      </div>
+      <ul class="sidebar-menu" id="sidebar-menu">
+        <li class="active" onclick="switchTab('dashboard')"><i data-lucide="layout-dashboard" style="width:18px;height:18px"></i> Dashboard</li>
+        <li onclick="switchTab('computers')"><i data-lucide="monitor" style="width:18px;height:18px"></i> Computers</li>
+        <li onclick="switchTab('orders')"><i data-lucide="shopping-bag" style="width:18px;height:18px"></i> Orders</li>
+        <li onclick="switchTab('users')"><i data-lucide="users" style="width:18px;height:18px"></i> Users</li>
+      </ul>
+    </aside>
+    <main class="admin-content" id="admin-content">
+      <!-- Rendered by JS -->
+    </main>
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    const computers = [
+      { id: 1, name: "MacBook Pro 16", category: "Laptops", brand: "Apple", image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80", specs: { processor: "M2 Pro", ram: "16GB", storage: "512GB SSD", display: "16-inch Liquid Retina XDR" }, price: { day: 45, week: 250, month: 900 }, status: "Available" },
+      { id: 2, name: "Dell XPS 15", category: "Laptops", brand: "Dell", image: "https://images.unsplash.com/photo-1593642632823-8f78536788c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80", specs: { processor: "Intel Core i7 12th Gen", ram: "32GB", storage: "1TB SSD", display: "15.6-inch OLED" }, price: { day: 35, week: 200, month: 700 }, status: "Available" },
+      { id: 3, name: "Alienware Aurora R13", category: "Gaming PCs", brand: "Dell", image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80", specs: { processor: "Intel Core i9 12900KF", ram: "64GB", storage: "2TB NVMe SSD", gpu: "RTX 3090" }, price: { day: 80, week: 450, month: 1500 }, status: "Rented" },
+      { id: 4, name: "HP Z4 Workstation", category: "Workstations", brand: "HP", image: "https://images.unsplash.com/photo-1619597455322-4fbbd8202516?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80", specs: { processor: "Intel Xeon W-2245", ram: "128GB", storage: "4TB HDD + 1TB SSD", gpu: "NVIDIA Quadro RTX 6000" }, price: { day: 100, week: 600, month: 2000 }, status: "Available" },
+      { id: 5, name: "Lenovo ThinkPad X1 Carbon", category: "Laptops", brand: "Lenovo", image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80", specs: { processor: "Intel Core i7 11th Gen", ram: "16GB", storage: "512GB SSD", display: "14-inch 4K" }, price: { day: 30, week: 180, month: 650 }, status: "Available" },
+      { id: 6, name: 'Apple iMac 24"', category: "Desktops", brand: "Apple", image: "https://images.unsplash.com/photo-1527443195645-1133f7f28990?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80", specs: { processor: "Apple M1", ram: "16GB", storage: "512GB SSD", display: "24-inch 4.5K Retina" }, price: { day: 40, week: 220, month: 750 }, status: "Available" },
+    ];
+
+    const Auth = {
+      getUser() { const s = localStorage.getItem('user'); return s ? JSON.parse(s) : null; },
+      isAdmin() { const u = this.getUser(); return u && u.isAdmin; },
+      _saveRegisteredUser(d) { const r = JSON.parse(localStorage.getItem('registeredUsers') || '[]'); if (!r.some(u => u.email === d.email)) { r.push({ name: d.name, email: d.email }); localStorage.setItem('registeredUsers', JSON.stringify(r)); } },
+      login(email, password) { const n = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()); const a = email.includes('admin'); const d = { email, password, isAdmin: a, name: a ? 'Admin User' : n }; localStorage.setItem('user', JSON.stringify(d)); this._saveRegisteredUser(d); return true; },
+      signup(name, email, password) { const a = email.includes('admin'); const d = { email, password, isAdmin: a, name: a ? 'Admin User' : name }; localStorage.setItem('user', JSON.stringify(d)); this._saveRegisteredUser(d); return true; },
+      logout() { localStorage.removeItem('user'); }
+    };
+
+    const Cart = {
+      getItems() { return JSON.parse(localStorage.getItem('cart') || '[]'); },
+      save(c) { localStorage.setItem('cart', JSON.stringify(c)); },
+      add(computer, duration, itemPrice) { const c = this.getItems(); const e = c.find(i => i.id === computer.id && i.selectedDuration === duration); if (e) { e.quantity += 1; e.itemPrice += itemPrice; } else { c.push({ ...computer, uniqueId: Date.now(), selectedDuration: duration, itemPrice, quantity: 1 }); } this.save(c); },
+      remove(uid) { this.save(this.getItems().filter(i => i.uniqueId !== uid)); },
+      clear() { this.save([]); },
+      getTotal() { return this.getItems().reduce((t, i) => t + i.itemPrice, 0); },
+      getCount() { return this.getItems().length; }
+    };
+
+    function renderNavbar() {
+      const user = Auth.getUser();
+      const cc = Cart.getCount();
+      const pg = location.pathname.split('/').pop() || 'index.html';
+      const nl = (h, t) => { const a = pg === h.split('/').pop() ? ' active' : ''; return '<li class="nav-item"><a href="' + h + '" class="nav-links' + a + '">' + t + '</a></li>'; };
+      let adm = ''; if (user && user.isAdmin) adm = nl('admin.html', 'Admin');
+      let us = '';
+      if (user) { us = '<li class="nav-item"><div class="user-menu"><span class="user-name">Hi, ' + user.name + '</span><button onclick="Auth.logout();location.reload();" class="btn-logout">Logout</button></div></li>'; }
+      else { us = '<li class="nav-item"><a href="login.html" class="nav-links-mobile">Login</a></li><li class="nav-btn"><a href="login.html" class="btn btn-outline">Login</a></li>'; }
+      document.getElementById('navbar').innerHTML = '<nav class="navbar"><div class="navbar-container"><a href="index.html" class="navbar-logo">TechRent</a><div class="menu-icon" onclick="toggleMenu()"><i data-lucide="menu" id="menu-open"></i><i data-lucide="x" id="menu-close" style="display:none"></i></div><ul class="nav-menu" id="nav-menu">' + nl('index.html','Home') + nl('rentals.html','Rentals') + nl('about.html','About Us') + nl('contact.html','Contact') + adm + '<li class="nav-item"><a href="cart.html" class="nav-links cart-icon"><i data-lucide="shopping-cart"></i>' + (cc > 0 ? '<span class="cart-badge">' + cc + '</span>' : '') + '</a></li>' + us + '</ul></div></nav>';
+    }
+    function toggleMenu() { const m = document.getElementById('nav-menu'); const o = document.getElementById('menu-open'); const c = document.getElementById('menu-close'); const a = m.classList.toggle('active'); o.style.display = a ? 'none' : ''; c.style.display = a ? '' : 'none'; }
+    function renderFooter() {
+      document.getElementById('footer').innerHTML = '<footer class="footer-section"><div class="container"><div class="footer-content"><div class="footer-col"><h3>TechRent</h3><p>Premium computer rentals for professionals, students, and events. Quality equipment, flexible terms.</p><div style="display:flex;gap:1rem;margin-top:1rem"><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon"><i data-lucide="facebook"></i></a><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-icon"><i data-lucide="twitter"></i></a><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon"><i data-lucide="instagram"></i></a><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon"><i data-lucide="linkedin"></i></a></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="rentals.html">Rentals</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-col"><h4>Contact Info</h4><ul><li style="display:flex;gap:0.5rem;align-items:center"><i data-lucide="map-pin" style="width:18px;height:18px"></i> 123 Tech Street, Silicon Valley, CA</li><li style="display:flex;gap:0.5rem;align-items:center"><i data-lucide="phone" style="width:18px;height:18px"></i> +1 (555) 123-4567</li><li style="display:flex;gap:0.5rem;align-items:center"><i data-lucide="mail" style="width:18px;height:18px"></i> support@techrent.com</li></ul></div></div><div class="footer-bottom"><p>&copy; ' + new Date().getFullYear() + ' TechRent. All rights reserved.</p></div></div></footer>';
+    }
+    function initPage() { renderNavbar(); renderFooter(); lucide.createIcons(); }
+
+    // Admin-specific JS
+    var currentTab = 'dashboard';
+
+    function getAdminComputers() {
+      var stored = localStorage.getItem('adminComputers');
+      if (stored) return JSON.parse(stored);
+      localStorage.setItem('adminComputers', JSON.stringify(computers));
+      return computers.slice();
+    }
+
+    function saveAdminComputers(list) {
+      localStorage.setItem('adminComputers', JSON.stringify(list));
+    }
+
+    function getOrders() {
+      return JSON.parse(localStorage.getItem('orders') || '[]');
+    }
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      var items = document.querySelectorAll('.sidebar-menu li');
+      items.forEach(function(li) { li.classList.remove('active'); });
+      var idx = { dashboard: 0, computers: 1, orders: 2, users: 3 };
+      if (items[idx[tab]]) items[idx[tab]].classList.add('active');
+      renderTab();
+    }
+
+    function renderTab() {
+      var content = document.getElementById('admin-content');
+      if (currentTab === 'dashboard') renderDashboard(content);
+      else if (currentTab === 'computers') renderComputers(content);
+      else if (currentTab === 'orders') renderOrders(content);
+      else if (currentTab === 'users') renderUsers(content);
+      lucide.createIcons();
+    }
+
+    function renderDashboard(el) {
+      var comps = getAdminComputers();
+      var orders = getOrders();
+      var users = getUsers();
+      var totalRevenue = orders.reduce(function(s, o) { return s + o.total; }, 0);
+      var availCount = comps.filter(function(c) { return c.status === 'Available'; }).length;
+
+      el.innerHTML =
+        '<h1 style="margin-bottom:2rem;font-size:1.75rem">Dashboard</h1>' +
+        '<div class="dashboard-stats">' +
+          '<div class="stat-card"><h3>Total Computers</h3><div class="stat-value">' + comps.length + '</div></div>' +
+          '<div class="stat-card"><h3>Available</h3><div class="stat-value" style="color:#10b981">' + availCount + '</div></div>' +
+          '<div class="stat-card"><h3>Total Orders</h3><div class="stat-value">' + orders.length + '</div></div>' +
+          '<div class="stat-card"><h3>Total Revenue</h3><div class="stat-value">$' + totalRevenue + '</div></div>' +
+          '<div class="stat-card"><h3>Registered Users</h3><div class="stat-value">' + users.length + '</div></div>' +
+        '</div>' +
+        '<h2 style="margin-bottom:1rem">Recent Orders</h2>' +
+        (orders.length === 0 ?
+          '<p style="color:var(--text-color);opacity:0.7">No orders yet.</p>' :
+          '<div class="table-container"><table class="admin-table"><thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Date</th><th>Status</th></tr></thead><tbody>' +
+          orders.slice(-5).reverse().map(function(o) {
+            return '<tr><td>' + o.id + '</td><td>' + o.user.name + '</td><td>$' + o.total + '</td><td>' + new Date(o.date).toLocaleDateString() + '</td><td><span class="status-pill active">' + o.status + '</span></td></tr>';
+          }).join('') +
+          '</tbody></table></div>'
+        );
+    }
+
+    function renderComputers(el) {
+      var comps = getAdminComputers();
+
+      el.innerHTML =
+        '<div class="page-header">' +
+          '<h1 style="font-size:1.75rem">Computers</h1>' +
+          '<button class="btn btn-primary" onclick="showAddModal()"><i data-lucide="plus" style="width:16px;height:16px;vertical-align:middle"></i> Add Computer</button>' +
+        '</div>' +
+        '<div class="table-container"><table class="admin-table"><thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Brand</th><th>Day Price</th><th>Status</th><th>Actions</th></tr></thead><tbody>' +
+        comps.map(function(c) {
+          var statusClass = c.status === 'Available' ? 'available' : 'rented';
+          return '<tr><td>' + c.id + '</td><td>' + c.name + '</td><td>' + c.category + '</td><td>' + c.brand + '</td><td>$' + c.price.day + '</td><td><span class="status-badge-sm ' + statusClass + '">' + c.status + '</span></td><td><button class="icon-btn delete" onclick="deleteComputer(' + c.id + ')" title="Delete"><i data-lucide="trash-2" style="width:18px;height:18px"></i></button></td></tr>';
+        }).join('') +
+        '</tbody></table></div>';
+    }
+
+    function deleteComputer(id) {
+      if (!confirm('Are you sure you want to delete this computer?')) return;
+      var comps = getAdminComputers().filter(function(c) { return c.id !== id; });
+      saveAdminComputers(comps);
+      renderTab();
+    }
+
+    function showAddModal() {
+      var overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.id = 'add-modal';
+      overlay.innerHTML =
+        '<div class="modal">' +
+          '<h2>Add New Computer</h2>' +
+          '<form id="add-computer-form">' +
+            '<div class="form-group"><label>Name</label><input type="text" id="ac-name" required></div>' +
+            '<div class="form-group"><label>Category</label><select id="ac-category"><option>Laptops</option><option>Desktops</option><option>Gaming PCs</option><option>Workstations</option></select></div>' +
+            '<div class="form-group"><label>Brand</label><input type="text" id="ac-brand" required></div>' +
+            '<div class="form-group"><label>Processor</label><input type="text" id="ac-processor" required></div>' +
+            '<div class="form-group"><label>RAM</label><input type="text" id="ac-ram" required placeholder="e.g. 16GB"></div>' +
+            '<div class="form-group"><label>Storage</label><input type="text" id="ac-storage" required placeholder="e.g. 512GB SSD"></div>' +
+            '<div class="form-group"><label>Price per Day ($)</label><input type="number" id="ac-price-day" required min="1"></div>' +
+            '<div class="form-group"><label>Price per Week ($)</label><input type="number" id="ac-price-week" required min="1"></div>' +
+            '<div class="form-group"><label>Price per Month ($)</label><input type="number" id="ac-price-month" required min="1"></div>' +
+            '<div class="modal-actions">' +
+              '<button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>' +
+              '<button type="submit" class="btn btn-primary">Add Computer</button>' +
+            '</div>' +
+          '</form>' +
+        '</div>';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
+      document.getElementById('add-computer-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var comps = getAdminComputers();
+        var maxId = comps.reduce(function(m, c) { return Math.max(m, c.id); }, 0);
+        var newComp = {
+          id: maxId + 1,
+          name: document.getElementById('ac-name').value,
+          category: document.getElementById('ac-category').value,
+          brand: document.getElementById('ac-brand').value,
+          image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+          specs: {
+            processor: document.getElementById('ac-processor').value,
+            ram: document.getElementById('ac-ram').value,
+            storage: document.getElementById('ac-storage').value
+          },
+          price: {
+            day: parseInt(document.getElementById('ac-price-day').value),
+            week: parseInt(document.getElementById('ac-price-week').value),
+            month: parseInt(document.getElementById('ac-price-month').value)
+          },
+          status: 'Available'
+        };
+        comps.push(newComp);
+        saveAdminComputers(comps);
+        closeModal();
+        renderTab();
+      });
+      lucide.createIcons();
+    }
+
+    function closeModal() {
+      var m = document.getElementById('add-modal');
+      if (m) m.remove();
+    }
+
+    function renderOrders(el) {
+      var orders = getOrders();
+
+      el.innerHTML =
+        '<h1 style="margin-bottom:2rem;font-size:1.75rem">Orders</h1>' +
+        (orders.length === 0 ?
+          '<p style="color:var(--text-color);opacity:0.7;padding:2rem;background:white;border-radius:var(--radius);text-align:center">No orders have been placed yet.</p>' :
+          '<div class="table-container"><table class="admin-table"><thead><tr><th>Order ID</th><th>Customer</th><th>Email</th><th>Items</th><th>Total</th><th>Date</th><th>Status</th></tr></thead><tbody>' +
+          orders.map(function(o) {
+            var itemNames = o.items.map(function(i) { return i.name; }).join(', ');
+            return '<tr><td>' + o.id + '</td><td>' + o.user.name + '</td><td>' + o.user.email + '</td><td>' + itemNames + '</td><td>$' + o.total + '</td><td>' + new Date(o.date).toLocaleDateString() + '</td><td><span class="status-pill active">' + o.status + '</span></td></tr>';
+          }).join('') +
+          '</tbody></table></div>'
+        );
+    }
+
+    function renderUsers(el) {
+      var users = getUsers();
+
+      el.innerHTML =
+        '<h1 style="margin-bottom:2rem;font-size:1.75rem">Registered Users</h1>' +
+        (users.length === 0 ?
+          '<p style="color:var(--text-color);opacity:0.7;padding:2rem;background:white;border-radius:var(--radius);text-align:center">No registered users yet.</p>' :
+          '<div class="table-container"><table class="admin-table"><thead><tr><th>#</th><th>Name</th><th>Email</th></tr></thead><tbody>' +
+          users.map(function(u, i) {
+            return '<tr><td>' + (i + 1) + '</td><td>' + u.name + '</td><td>' + u.email + '</td></tr>';
+          }).join('') +
+          '</tbody></table></div>'
+        );
+    }
+
+    // Protect admin route
+    (function() {
+      var user = Auth.getUser();
+      if (!user || !user.isAdmin) {
+        window.location.href = 'login.html';
+        return;
+      }
+      initPage();
+      renderTab();
+    })();
+  </script>
+</body>
+</html>

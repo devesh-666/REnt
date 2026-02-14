@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TechRent - Premium Computer Rentals</title>
+  <title>TechRent - Cart</title>
   <style>
     :root {
       --primary-color: #2563eb;
@@ -76,123 +76,43 @@
       .navbar-container { padding: 0 1rem; }
     }
 
-    .hero { background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; height: 85vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 1rem; color: white; }
-    .hero-content { max-width: 800px; animation: fadeInUp 1s ease-out; }
-    .hero-content h1 { font-size: 3.5rem; margin-bottom: 1.5rem; font-weight: 800; line-height: 1.1; }
-    .hero-content p { font-size: 1.25rem; margin-bottom: 2.5rem; color: #cbd5e1; }
-    .hero-buttons { display: flex; gap: 1rem; justify-content: center; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .section-padding { padding: 6rem 0; }
-    .bg-gray { background-color: #f1f5f9; }
-    .section-header { text-align: center; margin-bottom: 4rem; }
-    .section-title { font-size: 2.5rem; margin-bottom: 1rem; color: var(--secondary-color); text-align: center; }
-    .section-subtitle { color: var(--text-color); font-size: 1.1rem; opacity: 0.8; }
-    .center-btn { text-align: center; margin-top: 3rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; padding: 0 1.5rem; max-width: 1200px; margin: 0 auto; }
-    .card { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition); border: 1px solid var(--gray-200); }
-    .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
-    .card-img-container { position: relative; height: 220px; overflow: hidden; }
-    .card-img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-    .card:hover .card-img-container img { transform: scale(1.05); }
-    .status-badge { position: absolute; top: 10px; right: 10px; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
-    .status-badge.available { background-color: #10b981; color: white; }
-    .status-badge.rented { background-color: #ef4444; color: white; }
-    .card-body { padding: 1.5rem; }
-    .card-category { font-size: 0.8rem; color: var(--primary-color); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
-    .card-title { font-size: 1.25rem; margin: 0.5rem 0 1rem; color: var(--secondary-color); }
-    .card-specs { color: var(--text-color); font-size: 0.9rem; margin-bottom: 1.5rem; opacity: 0.7; }
-    .card-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
-    .card-price { font-size: 1.25rem; font-weight: 700; color: var(--secondary-color); }
-    .period { font-size: 0.8rem; font-weight: 400; opacity: 0.7; }
-    .btn-link { color: var(--primary-color); font-weight: 600; transition: transform 0.2s; display: inline-flex; align-items: center; gap: 0.25rem; }
-    .btn-link:hover { transform: translateX(5px); }
-    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-    .testimonial-card { background: white; padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow-sm); transition: transform 0.3s ease; }
-    .testimonial-card:hover { transform: translateY(-5px); }
-    .quote { font-style: italic; color: var(--text-color); margin-bottom: 1.5rem; font-size: 1.1rem; line-height: 1.6; }
-    .author { display: flex; align-items: center; gap: 1rem; }
-    .avatar { width: 50px; height: 50px; background-color: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; }
-    .avatar.secondary { background-color: var(--secondary-color); }
-    .avatar.accent { background-color: var(--accent-color); }
-    .author-info h4 { margin-bottom: 0.2rem; color: var(--secondary-color); font-weight: 700; }
-    .author-info span { font-size: 0.85rem; color: var(--text-color); opacity: 0.7; }
-    .cta-section { background-color: var(--primary-color); color: white; padding: 5rem 1rem; text-align: center; }
-    .cta-content h2 { font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700; }
-    .cta-content p { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; }
-    .large { font-size: 1.2rem; padding: 1rem 2.5rem; background: white; color: var(--primary-color); border: none; font-weight: 700; border-radius: 0.5rem; display: inline-block; }
-    .large:hover { background: #f1f5f9; }
-    @media (max-width: 768px) { .hero-content h1 { font-size: 2.5rem; } }
+    .cart-page { padding: 3rem 0; }
+    .page-title { margin-bottom: 2rem; font-size: 2rem; font-weight: 700; }
+    .cart-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+    .cart-items-section { background: white; padding: 1rem; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+    .cart-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .cart-item { display: flex; gap: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--gray-200); align-items: center; }
+    .cart-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .cart-item-img { width: 100px; height: 100px; object-fit: cover; border-radius: var(--radius); }
+    .cart-item-details { flex: 1; }
+    .cart-item-details h3 { margin: 0 0 0.5rem 0; font-size: 1.25rem; }
+    .item-specs { font-size: 0.9rem; color: var(--text-color); margin-bottom: 0.25rem; }
+    .item-duration { font-size: 0.9rem; font-weight: 600; color: var(--primary-color); }
+    .cart-item-price { font-size: 1.25rem; font-weight: 700; color: var(--secondary-color); }
+    .btn-remove { background: transparent; border: none; color: #ef4444; cursor: pointer; transition: color 0.2s; font-size: 1.2rem; }
+    .btn-remove:hover { color: #b91c1c; }
+    .checkout-form { padding: 1.5rem; background: white; border-radius: var(--radius); }
+    .checkout-form h2 { margin-bottom: 1.5rem; }
+    .payment-options { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
+    .payment-option { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: var(--radius); cursor: pointer; transition: all 0.2s; }
+    .payment-option.active, .payment-option:hover { border-color: var(--primary-color); background-color: var(--gray-50); }
+    .payment-option input[type="radio"] { width: auto; }
+    .cart-summary-section { background: var(--gray-50); padding: 2rem; border-radius: var(--radius); height: fit-content; }
+    .order-summary h2 { margin-bottom: 1.5rem; }
+    .summary-row { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 1rem; }
+    .summary-row.total { font-weight: 700; font-size: 1.25rem; border-top: 2px solid var(--gray-200); padding-top: 1rem; margin-top: 1rem; }
+    .empty-cart { text-align: center; padding: 4rem; background: var(--gray-50); border-radius: var(--radius); }
+    .confirmation-box { text-align: center; padding: 4rem; background: white; border-radius: var(--radius); box-shadow: var(--shadow-lg); max-width: 600px; margin: 0 auto; }
+    .success-icon { width: 80px; height: 80px; background: #10b981; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 3rem; margin: 0 auto 1.5rem; }
+    @media (max-width: 768px) { .cart-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <div id="navbar"></div>
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Rent Premium Computers for Any Need</h1>
-      <p>From powerful workstations to sleek laptops, get the technology you need without the commitment of buying. Flexible rental periods, competitive prices.</p>
-      <div class="hero-buttons">
-        <a href="rentals.html" class="btn btn-primary" style="font-size:1.1rem;padding:1rem 2rem;">Browse Rentals</a>
-        <a href="about.html" class="btn btn-outline-white">Learn More</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-padding">
-    <div class="section-header">
-      <h2 class="section-title">Featured Rentals</h2>
-      <p class="section-subtitle">Explore our most popular computer rentals</p>
-    </div>
-    <div class="grid" id="featured-grid"></div>
-    <div class="center-btn">
-      <a href="rentals.html" class="btn btn-outline">View All Rentals</a>
-    </div>
-  </section>
-
-  <section class="section-padding bg-gray">
-    <div class="section-header">
-      <h2 class="section-title">What Our Customers Say</h2>
-      <p class="section-subtitle">Trusted by thousands of professionals and businesses</p>
-    </div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card">
-        <p class="quote">"TechRent saved our startup thousands of dollars. We rented high-end workstations for our team during a critical development sprint. The equipment was top-notch and delivery was seamless."</p>
-        <div class="author">
-          <div class="avatar">S</div>
-          <div class="author-info">
-            <h4>Sarah Johnson</h4>
-            <span>CTO, StartupFlow</span>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <p class="quote">"As a freelance video editor, I needed a powerful machine for a short project. TechRent provided exactly what I needed at a fraction of the purchase cost. Highly recommended!"</p>
-        <div class="author">
-          <div class="avatar secondary">M</div>
-          <div class="author-info">
-            <h4>Mike Chen</h4>
-            <span>Freelance Video Editor</span>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <p class="quote">"We use TechRent for all our corporate events and training sessions. Their bulk rental options and technical support are unmatched. A reliable partner for any business."</p>
-        <div class="author">
-          <div class="avatar accent">E</div>
-          <div class="author-info">
-            <h4>Emily Rodriguez</h4>
-            <span>Event Manager, TechCorp</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cta-section">
-    <div class="cta-content">
-      <h2>Ready to Get Started?</h2>
-      <p>Browse our collection and find the perfect computer for your needs.</p>
-      <a href="rentals.html" class="btn large">Start Renting Now</a>
+  <section class="cart-page">
+    <div class="container" id="cart-content">
+      <!-- Rendered by JS -->
     </div>
   </section>
 
@@ -245,31 +165,186 @@
     }
     function initPage() { renderNavbar(); renderFooter(); lucide.createIcons(); }
 
-    function renderFeatured() {
-      var grid = document.getElementById('featured-grid');
-      grid.innerHTML = computers.slice(0, 3).map(function(c) {
-        var statusClass = c.status === 'Available' ? 'available' : 'rented';
-        var specText = c.specs.processor + ' | ' + c.specs.ram + ' RAM | ' + c.specs.storage;
-        return '<div class="card">' +
-          '<div class="card-img-container">' +
-            '<img src="' + c.image + '" alt="' + c.name + '">' +
-            '<span class="status-badge ' + statusClass + '">' + c.status + '</span>' +
+    // Page-specific JS
+    var step = 1;
+    var lastOrderId = '';
+
+    function removeItem(uid) {
+      Cart.remove(uid);
+      renderCart();
+      renderNavbar();
+      lucide.createIcons();
+    }
+
+    function proceedToCheckout() {
+      var user = Auth.getUser();
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      step = 2;
+      renderCart();
+      lucide.createIcons();
+    }
+
+    function submitOrder(e) {
+      e.preventDefault();
+      var user = Auth.getUser();
+      var items = Cart.getItems();
+      var total = Cart.getTotal();
+      var orderId = 'TR-' + Date.now().toString(36).toUpperCase();
+      lastOrderId = orderId;
+
+      var order = {
+        id: orderId,
+        user: { name: user.name, email: user.email },
+        items: items,
+        total: total,
+        date: new Date().toISOString(),
+        status: 'Active',
+        shipping: {
+          name: document.getElementById('ship-name').value,
+          address: document.getElementById('ship-address').value,
+          city: document.getElementById('ship-city').value,
+          phone: document.getElementById('ship-phone').value
+        }
+      };
+
+      var orders = JSON.parse(localStorage.getItem('orders') || '[]');
+      orders.push(order);
+      localStorage.setItem('orders', JSON.stringify(orders));
+      Cart.clear();
+      step = 3;
+      renderCart();
+      renderNavbar();
+      lucide.createIcons();
+    }
+
+    function renderCart() {
+      var content = document.getElementById('cart-content');
+      var items = Cart.getItems();
+      var total = Cart.getTotal();
+
+      if (step === 3) {
+        content.innerHTML =
+          '<h1 class="page-title">Order Confirmed</h1>' +
+          '<div class="confirmation-box">' +
+            '<div class="success-icon"><i data-lucide="check" style="width:48px;height:48px"></i></div>' +
+            '<h2 style="margin-bottom:1rem;color:var(--secondary-color)">Thank you for your order!</h2>' +
+            '<p style="margin-bottom:0.5rem;font-size:1.1rem">Your order ID is: <strong>' + lastOrderId + '</strong></p>' +
+            '<p style="margin-bottom:2rem;color:var(--text-color);opacity:0.7">We\'ll send you a confirmation email shortly with your rental details.</p>' +
+            '<a href="rentals.html" class="btn btn-primary">Continue Browsing</a>' +
+          '</div>';
+        return;
+      }
+
+      if (items.length === 0) {
+        content.innerHTML =
+          '<h1 class="page-title">Your Cart</h1>' +
+          '<div class="empty-cart">' +
+            '<i data-lucide="shopping-cart" style="width:64px;height:64px;color:var(--gray-300);margin-bottom:1rem"></i>' +
+            '<h2 style="margin-bottom:1rem;color:var(--secondary-color)">Your cart is empty</h2>' +
+            '<p style="margin-bottom:2rem">Browse our collection and add some computers to your cart.</p>' +
+            '<a href="rentals.html" class="btn btn-primary">Browse Rentals</a>' +
+          '</div>';
+        return;
+      }
+
+      if (step === 2) {
+        var user = Auth.getUser();
+        content.innerHTML =
+          '<h1 class="page-title">Checkout</h1>' +
+          '<div class="cart-grid">' +
+            '<div class="checkout-form">' +
+              '<h2>Shipping Information</h2>' +
+              '<form id="checkout-form">' +
+                '<div class="form-group">' +
+                  '<label for="ship-name">Full Name</label>' +
+                  '<input type="text" id="ship-name" required value="' + (user ? user.name : '') + '">' +
+                '</div>' +
+                '<div class="form-group">' +
+                  '<label for="ship-address">Address</label>' +
+                  '<input type="text" id="ship-address" required placeholder="Street address">' +
+                '</div>' +
+                '<div class="form-group">' +
+                  '<label for="ship-city">City</label>' +
+                  '<input type="text" id="ship-city" required placeholder="City, State, ZIP">' +
+                '</div>' +
+                '<div class="form-group">' +
+                  '<label for="ship-phone">Phone</label>' +
+                  '<input type="tel" id="ship-phone" required placeholder="+1 (555) 000-0000">' +
+                '</div>' +
+                '<h3 style="margin-top:1.5rem;margin-bottom:0.75rem">Payment Method</h3>' +
+                '<div class="payment-options">' +
+                  '<label class="payment-option active" onclick="selectPayment(this)">' +
+                    '<input type="radio" name="payment" value="credit" checked style="width:auto"> Credit Card' +
+                  '</label>' +
+                  '<label class="payment-option" onclick="selectPayment(this)">' +
+                    '<input type="radio" name="payment" value="debit" style="width:auto"> Debit Card' +
+                  '</label>' +
+                  '<label class="payment-option" onclick="selectPayment(this)">' +
+                    '<input type="radio" name="payment" value="paypal" style="width:auto"> PayPal' +
+                  '</label>' +
+                '</div>' +
+                '<button type="submit" class="btn btn-primary btn-block" style="margin-top:2rem">Place Order - $' + total + '</button>' +
+              '</form>' +
+            '</div>' +
+            '<div class="cart-summary-section">' +
+              '<div class="order-summary">' +
+                '<h2>Order Summary</h2>' +
+                items.map(function(item) {
+                  return '<div class="summary-row"><span>' + item.name + ' (' + item.selectedDuration + ')</span><span>$' + item.itemPrice + '</span></div>';
+                }).join('') +
+                '<div class="summary-row total"><span>Total</span><span>$' + total + '</span></div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+
+        document.getElementById('checkout-form').addEventListener('submit', submitOrder);
+        return;
+      }
+
+      // Step 1: Cart items
+      content.innerHTML =
+        '<h1 class="page-title">Your Cart (' + items.length + ' item' + (items.length > 1 ? 's' : '') + ')</h1>' +
+        '<div class="cart-grid">' +
+          '<div class="cart-items-section">' +
+            '<div class="cart-list">' +
+              items.map(function(item) {
+                return '<div class="cart-item">' +
+                  '<img src="' + item.image + '" alt="' + item.name + '" class="cart-item-img">' +
+                  '<div class="cart-item-details">' +
+                    '<h3>' + item.name + '</h3>' +
+                    '<p class="item-specs">' + item.specs.processor + ' | ' + item.specs.ram + ' RAM</p>' +
+                    '<p class="item-duration">Duration: ' + item.selectedDuration + (item.quantity > 1 ? ' x' + item.quantity : '') + '</p>' +
+                  '</div>' +
+                  '<span class="cart-item-price">$' + item.itemPrice + '</span>' +
+                  '<button class="btn-remove" onclick="removeItem(' + item.uniqueId + ')" title="Remove"><i data-lucide="trash-2" style="width:20px;height:20px"></i></button>' +
+                '</div>';
+              }).join('') +
+            '</div>' +
           '</div>' +
-          '<div class="card-body">' +
-            '<div class="card-category">' + c.category + '</div>' +
-            '<h3 class="card-title">' + c.name + '</h3>' +
-            '<p class="card-specs">' + specText + '</p>' +
-            '<div class="card-bottom">' +
-              '<span class="card-price">$' + c.price.day + '<span class="period">/day</span></span>' +
-              '<a href="rental-details.html#' + c.id + '" class="btn-link">View Details <i data-lucide="arrow-right" style="width:16px;height:16px"></i></a>' +
+          '<div class="cart-summary-section">' +
+            '<div class="order-summary">' +
+              '<h2>Order Summary</h2>' +
+              '<div class="summary-row"><span>Subtotal</span><span>$' + total + '</span></div>' +
+              '<div class="summary-row"><span>Delivery</span><span style="color:#10b981">Free</span></div>' +
+              '<div class="summary-row"><span>Insurance</span><span style="color:#10b981">Included</span></div>' +
+              '<div class="summary-row total"><span>Total</span><span>$' + total + '</span></div>' +
+              '<button class="btn btn-primary btn-block" onclick="proceedToCheckout()" style="margin-top:1.5rem">Proceed to Checkout</button>' +
+              '<a href="rentals.html" style="display:block;text-align:center;margin-top:1rem;color:var(--primary-color);font-weight:500">Continue Shopping</a>' +
             '</div>' +
           '</div>' +
         '</div>';
-      }).join('');
+    }
+
+    function selectPayment(el) {
+      document.querySelectorAll('.payment-option').forEach(function(o) { o.classList.remove('active'); });
+      el.classList.add('active');
     }
 
     initPage();
-    renderFeatured();
+    renderCart();
     lucide.createIcons();
   </script>
 </body>
